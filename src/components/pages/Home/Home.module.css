@@ -1,0 +1,10 @@
+.dark {
+  background-color: darkolivegreen;
+  color: beige;
+
+}
+
+.light {
+  background-color: beige;
+  color: darkolivegreen;
+}
