@@ -15,12 +15,19 @@ const makanan = [
 
 const Home = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [menus, setMenus] = useState([]);
   const showButton = false;
   console.log(darkMode);
 
+  // useEffect(() => {
+  //   alert(`Mode  ${darkMode ? "Gelap" : "Terang"} Aktif!`);
+  // }, [darkMode]);
+
   useEffect(() => {
-    alert(`Mode  ${darkMode ? "Gelap" : "Terang"} Aktif!`);
-  }, [darkMode]);
+    fetch("https://wpu-cafe.vercel.app/api/menu")
+      .then((response) => response.json())
+      .then((data) => setMenus(data.data));
+  }, []);
 
   return (
     <main className={darkMode ? styles.dark : styles.light}>
@@ -39,6 +46,13 @@ const Home = () => {
       {makanan.map((item, index) => (
         <Button key={`makanan-${index}`} type="button">
           {item.nama}
+        </Button>
+      ))}
+      <br />
+      <br />
+      {menus.map((menu: { id: string; name: string }) => (
+        <Button key={`makanan-${menu.id}`} type="button">
+          {menu.name}
         </Button>
       ))}
 
