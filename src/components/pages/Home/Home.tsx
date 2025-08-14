@@ -3,6 +3,7 @@ import Button from "../../ui/Button";
 import styles from "./Home.module.css";
 import useCounterStore from "../../../stores/CounterStore";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 const makanan = [
   {
@@ -21,7 +22,7 @@ const Home = () => {
   const showButton = false;
   console.log(darkMode);
 
-  const { data } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["dataMenu"],
     queryFn: async () => {
       return await fetch("https://wpu-cafe.vercel.app/api/menu").then(
@@ -64,6 +65,22 @@ const Home = () => {
       ))}
       <br />
       <br />
+
+      <h1>Go to</h1>
+      <Link to={"/"}>
+        <Button>Home</Button>
+      </Link>
+
+       <Link to={"/about"}>
+        <Button>About</Button>
+      </Link>
+
+     
+      <br />
+      <br />
+      <h1>Menu</h1>
+      {isLoading ? <h2>Loading...</h2> : ""}
+      {isError ? <h2>Error...</h2> : ""}
       {data?.data.map((menu: { id: string; name: string }) => (
         <Button key={`makanan-${menu.id}`} type="button">
           {menu.name}
