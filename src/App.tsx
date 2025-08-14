@@ -1,18 +1,9 @@
-import Home from "./components/pages/Home";
-import Button from "./components/ui/Button/";
+
+import { RouterProvider } from "react-router-dom";
+import router from "./routes";
 
 const App = () => {
-  return (
-    <>
-      <Home />
-
-      <Button type="submit">Ukhasyah</Button>
-      <Button>Zufar</Button>
-      <Button>
-        <h1>Hani</h1>
-      </Button>
-    </>
-  );
+  return <RouterProvider router={router}/>
 };
 
 export default App;
