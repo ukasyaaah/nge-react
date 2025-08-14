@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../../ui/Button";
 import styles from "./Home.module.css";
+import useCounterStore from "../../../stores/CounterStore";
+import { useQuery } from "@tanstack/react-query";
 
 const makanan = [
   {
@@ -14,24 +16,36 @@ const makanan = [
 ];
 
 const Home = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
-  const [menus, setMenus] = useState([]);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const { count, increment, decrement, reset } = useCounterStore();
   const showButton = false;
   console.log(darkMode);
 
-  // useEffect(() => {
-  //   alert(`Mode  ${darkMode ? "Gelap" : "Terang"} Aktif!`);
-  // }, [darkMode]);
+  const { data } = useQuery({
+    queryKey: ["dataMenu"],
+    queryFn: async () => {
+      return await fetch("https://wpu-cafe.vercel.app/api/menu").then(
+        (response) => response.json()
+      );
+    },
+  });
 
-  useEffect(() => {
-    fetch("https://wpu-cafe.vercel.app/api/menu")
-      .then((response) => response.json())
-      .then((data) => setMenus(data.data));
-  }, []);
+  console.log(data?.data);
 
   return (
     <main className={darkMode ? styles.dark : styles.light}>
-      <h1 onClick={() => alert("Hello User!")}>Hello Ukhasyah's World</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "10px",
+        }}
+      >
+        <h1 onClick={() => alert("Hello User!")}>Hello Ukhasyah's World</h1>
+        <Button onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </Button>
+      </div>
 
       {/* Rendering Condition */}
       {showButton ? (
@@ -50,17 +64,22 @@ const Home = () => {
       ))}
       <br />
       <br />
-      {menus.map((menu: { id: string; name: string }) => (
+      {data?.data.map((menu: { id: string; name: string }) => (
         <Button key={`makanan-${menu.id}`} type="button">
           {menu.name}
         </Button>
       ))}
+      <br />
+      <br />
 
       <br />
       <br />
-      <Button onClick={() => setDarkMode(!darkMode)}>
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </Button>
+
+      <h1>Counter</h1>
+      <p> {count} </p>
+      <Button onClick={() => increment()}>Tambah</Button>
+      <Button onClick={() => decrement()}>Kurang</Button>
+      <Button onClick={() => reset()}>Reset</Button>
     </main>
   );
 };
