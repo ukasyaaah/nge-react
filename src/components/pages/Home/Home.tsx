@@ -65,17 +65,16 @@ const Home = () => {
       ))}
       <br />
       <br />
-
+      
       <h1>Go to</h1>
       <Link to={"/"}>
         <Button>Home</Button>
       </Link>
 
-       <Link to={"/about"}>
+      <Link to={"/about"}>
         <Button>About</Button>
       </Link>
 
-     
       <br />
       <br />
       <h1>Menu</h1>
@@ -86,9 +85,6 @@ const Home = () => {
           {menu.name}
         </Button>
       ))}
-      <br />
-      <br />
-
       <br />
       <br />
 
